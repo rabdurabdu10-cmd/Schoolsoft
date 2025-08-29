@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchoolSoft - Nordic International School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Inloggningssida */
+        #login-page {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .login-header {
+            background: linear-gradient(to right, #0066a1, #0083c1);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .school-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .login-container {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-box {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0066a1;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .login-form input:focus {
+            border-color: #0066a1;
+            outline: none;
+        }
+        
+        .login-btn {
+            background: linear-gradient(to right, #0066a1, #0083c1);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(to right, #00538a, #0066a1);
+        }
+        
+        .login-help {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .login-help a {
+            color: #0066a1;
+            text-decoration: none;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Huvudapplikation */
+        #schoolsoft-app {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(to right, #0066a1, #0083c1);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info i {
+            margin-left: 15px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        /* Main layout */
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #e8eaed;
+            padding: 20px 0;
+            border-right: 1px solid #d4d4d4;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .menu-item:hover {
+            background-color: #d4d4d4;
+        }
+        
+        .menu-item.active {
+            background-color: #d4d4d4;
+            border-left: 4px solid #0066a1;
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: #0066a1;
+        }
+        
+        /* Main content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-header h2 {
+            font-size: 18px;
+            color: #0066a1;
+        }
+        
+        /* Betygssida */
+        .course-grades {
+            margin-bottom: 25px;
+        }
+        
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e6f2ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .course-header h3 {
+            color: #0066a1;
+        }
+        
+        .grade-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .grade-box {
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .grade-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0066a1;
+            margin-bottom: 5px;
+        }
+        
+        .grade-date {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .grade-description {
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        .incomplete-grade {
+            background-color: #fff0f0;
+        }
+        
+        .incomplete-grade .grade-value {
+            color: #dc3545;
+        }
+        
+        /* Frånvaroanmälan */
+        .absence-form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #0066a1, #0083c1);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #00538a, #0066a1);
+        }
+        
+        .btn-secondary {
+            background-color: #e8eaed;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d4d4d4;
+        }
+        
+        /* Närvaroöversikt */
+        .attendance-overview {
+            margin-top: 20px;
+        }
+        
+        .attendance-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .attendance-date {
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .attendance-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-absent {
+            background-color: #fff0f0;
+            color: #dc3545;
+        }
+        
+        .status-present {
+            background-color: #f0fff0;
+            color: #28a745;
+        }
+        
+        .status-late {
+            background-color: #fff8e6;
+            color: #ffaa00;
+        }
+        
+        /* Schedule */
+        .schedule-day {
+            margin-bottom: 15px;
+        }
+        
+        .schedule-day h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .schedule-item {
+            display: flex;
+            padding: 8px;
+            border-left: 3px solid #0066a1;
+            background-color: #f9f9f9;
+            margin-bottom: 5px;
+        }
+        
+        .schedule-time {
+            font-weight: bold;
+            min-width: 90px;
+            color: #666;
+        }
+        
+        .absence-item {
+            border-left: 3px solid #ff4d4d;
+            background-color: #fff0f0;
+        }
+        
+        .absence-marker {
+            color: #ff4d4d;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        /* News */
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-date {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #d4d4d4;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .user-info span {
+                display: none;
+            }
+        }
+        
+        /* Ikoner för betyg */
+        .grade-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 12px;
+            color: #dc3545;
+        }
+        
+        /* Dagens datum */
+        .current-date {
+            background-color: #e6f2ff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #0066a1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .current-date i {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Inloggningssida -->
+    <div id="login-page">
+        <div class="login-header">
+            <div class="school-name">Nordic International School</div>
+        </div>
+        
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-logo">
+                    <i class="fas fa-graduation-cap"></i> SCHOOLSOFT
+                </div>
+                
+                <form class="login-form" id="login-form">
+                    <div>
+                        <input type="email" id="email" placeholder="E-postadress" required value="abdulrahman@gmail.com">
+                    </div>
+                    <div>
+                        <input type="password" id="password" placeholder="Lösenord" required value="school123">
+                    </div>
+                    <div class="error-message" id="error-message">
+                        Fel e-post eller lösenord. Försök igen.
+                    </div>
+                    <button type="submit" class="login-btn">Logga in</button>
+                </form>
+                
+                <div class="login-help">
+                    <a href="#">Glömt ditt lösenord?</a> | <a href="#">Be om hjälp</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Huvudapplikation (visas efter inloggning) -->
+    <div id="schoolsoft-app">
+        <header>
+            <div class="logo-container">
+                <div class="logo">SCHOOLSOFT</div>
+                <div>Nordic International School</div>
+            </div>
+            <div class="user-info">
+                <span>Abdulrahman Majnoun Almolaqab Sheikh Qoroush</span>
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-envelope"></i>
+                <i class="fas fa-cog"></i>
+                <i class="fas fa-sign-out-alt" id="logout-btn"></i>
+            </div>
+        </header>
+        
+        <div class="container">
+            <div class="sidebar">
+                <div class="menu-item active" data-target="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Startsida</span>
+                </div>
+                <div class="menu-item" data-target="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Schema</span>
+                </div>
+                <div class="menu-item" data-target="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Kurser</span>
+                </div>
+                <div class="menu-item" data-target="grades">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Betyg</span>
+                </div>
+                <div class="menu-item" data-target="attendance">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Närvaro</span>
+                </div>
+                <div class="menu-item" data-target="messages">
+                    <i class="fas fa-comments"></i>
+                    <span>Meddelanden</span>
+                </div>
+                <div class="menu-item" data-target="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Uppgifter</span>
+                </div>
+                <div class="menu-item" data-target="documents">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Dokument</span>
+                </div>
+                <div class="menu-item" data-target="classmates">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Klasskamrater</span>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <!-- Startsida -->
+                <div class="content-section active" id="dashboard">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Välkommen, Abdulrahman!</h1>
+                    
+                    <div class="current-date">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="current-date-text">Laddar datum...</span>
+                    </div>
+                    
+                    <div class="dashboard">
+                        <div class="left-column">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2><i class="fas fa-calendar-alt"></i> Dagens schema</h2>
+                                    <span id="schedule-date">Måndag 15 maj</span>
+                                </div>
+                                
+                                <div class="schedule-day">
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">08:15 - 09:05</div>
+                                        <div class="schedule-course">Matematik (B222)</div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">09:10 - 10:00</div>
+                                        <div class="schedule-course">Svenska (A103)</div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">10:15 - 11:05</div>
+                                        <div class="schedule-course">Engelska (A115)</div>
+                                    </div>
+                                    <div class="schedule-item absence-item">
+                                        <div class="schedule-time">10:40 - 11:10</div>
+                                        <div class="schedule-course">Skippad lektion <span class="absence-marker">(Oanmäld frånvaro)</span></div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">11:10 - 12:00</div>
+                                        <div class="schedule-course">Idrott (Idrottshall)</div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">12:45 - 13:35</div>
+                                        <div class="schedule-course">Biologi (Lab)</div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <div class="schedule-time">13:40 - 14:30</div>
+                                        <div class="schedule-course">Samhällskunskap (B205)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="right-column">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2><i class="fas fa-tasks"></i> Kommande uppgifter</h2>
+                                </div>
+                                
+                                <div class="news-item">
+                                    <div><strong>Matematik - Kapitel 6</strong></div>
+                                    <div class="news-date">Inlämning: 18 maj</div>
+                                </div>
+                                <div class="news-item">
+                                    <div><strong>Engelska - Essay</strong></div>
+                                    <div class="news-date">Inlämning: 20 maj</div>
+                                </div>
+                                <div class="news-item">
+                                    <div><strong>Biologi - Laboration</strong></div>
+                                    <div class="news-date">Inlämning: 22 maj</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Betygssida -->
+                <div class="content-section" id="grades">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Betyg</h1>
+                    
+                    <div class="current-date">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="grades-date-text">Laddar datum...</span>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-bar"></i> Dina betyg</h2>
+                            <span>Höstterminen 2023</span>
+                        </div>
+                        
+                        <div class="course-grades">
+                            <div class="course-header" onclick="toggleCourse('math')">
+                                <h3>Matematik</h3>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="grade-list" id="math-grades">
+                                <div class="grade-box incomplete-grade">
+                                    <i class="fas fa-exclamation-circle grade-icon"></i>
+                                    <div class="grade-value">I</div>
+                                    <div class="grade-description">Prov 1</div>
+                                    <div class="grade-date">15 okt</div>
+                                </div>
+                                <div class="grade-box">
+                                    <div class="grade-value">B</div>
+                                    <div class="grade-description">Inlämning 2</div>
+                                    <div class="grade-date">22 okt</div>
+                                </div>
+                                <div class="grade-box">
+                                    <div class="grade-value">A</div>
+                                    <div class="grade-description">Projekt</div>
+                                    <div class="grade-date">5 nov</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-grades">
+                            <div class="course-header" onclick="toggleCourse('swedish')">
+                                <h3>Svenska</h3>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="grade-list" id="swedish-grades">
+                                <div class="grade-box">
+                                    <div class="grade-value">C</div>
+                                    <div class="grade-description">Läsförståelse</div>
+                                    <div class="grade-date">10 okt</div>
+                                </div>
+                                <div class="grade-box">
+                                    <div class="grade-value">B</div>
+                                    <div class="grade-description">Grammatik</div>
+                                    <div class="grade-date">25 okt</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-grades">
+                            <div class="course-header" onclick="toggleCourse('english')">
+                                <h3>Engelska</h3>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="grade-list" id="english-grades">
+                                <div class="grade-box incomplete-grade">
+                                    <i class="fas fa-exclamation-circle grade-icon"></i>
+                                    <div class="grade-value">I</div>
+                                    <div class="grade-description">Essay</div>
+                                    <div class="grade-date">12 nov</div>
+                                </div>
+                                <div class="grade-box">
+                                    <div class="grade-value">A</div>
+                                    <div class="grade-description">Presentation</div>
+                                    <div class="grade-date">20 nov</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="course-grades">
+                            <div class="course-header" onclick="toggleCourse('biology')">
+                                <h3>Biologi</h3>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="grade-list" id="biology-grades">
+                                <div class="grade-box">
+                                    <div class="grade-value">B</div>
+                                    <div class="grade-description">Teoriprov</div>
+                                    <div class="grade-date">8 okt</div>
+                                </div>
+                                <div class="grade-box incomplete-grade">
+                                    <i class="fas fa-exclamation-circle grade-icon"></i>
+                                    <div class="grade-value">I</div>
+                                    <div class="grade-description">Laboration</div>
+                                    <div class="grade-date">15 nov</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Närvarosida -->
+                <div class="content-section" id="attendance">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Närvaro</h1>
+                    
+                    <div class="current-date">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="attendance-date-text">Laddar datum...</span>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-clipboard-list"></i> Närvarostatistik</h2>
+                            <span>Höstterminen 2023</span>
+                        </div>
+                        
+                        <div class="attendance-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" style="color: #28a745;">92%</div>
+                                <div class="stat-label">Närvaro</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" style="color: #dc3545;">5%</div>
+                                <div class="stat-label">Oanmäld frånvaro</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" style="color: #ffc107;">3%</div>
+                                <div class="stat-label">Anmäld frånvaro</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-history"></i> Senaste frånvaron</h2>
+                        </div>
+                        
+                        <div class="attendance-list">
+                            <div class="attendance-item">
+                                <div class="attendance-date">Idag 10:40-11:10</div>
+                                <div class="attendance-status status-absent">Oanmäld frånvaro</div>
+                            </div>
+                            <div class="attendance-item">
+                                <div class="attendance-date">12 november 13:40-14:30</div>
+                                <div class="attendance-status status-late">Anmäld frånvaro</div>
+                            </div>
+                            <div class="attendance-item">
+                                <div class="attendance-date">5 november 08:15-09:05</div>
+                                <div class="attendance-status status-late">Försenad</div>
+                            </div>
+                            <div class="attendance-item">
+                                <div class="attendance-date">28 oktober 10:15-11:05</div>
+                                <div class="attendance-status status-absent">Oanmäld frånvaro</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absence-form">
+                        <h2 style="margin-bottom: 20px; color: #0066a1;"><i class="fas fa-edit"></i> Anmäl frånvaro</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="absence-date">Datum</label>
+                                <input type="date" id="absence-date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="absence-type">Typ av frånvaro</label>
+                                <select id="absence-type" required>
+                                    <option value="">Välj typ</option>
+                                    <option value="sick">Sjuk</option>
+                                    <option value="appointment">Läkarbesök</option>
+                                    <option value="family">Familjeskäl</option>
+                                    <option value="other">Övrigt</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="start-time">Från</label>
+                                <input type="time" id="start-time" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="end-time">Till</label>
+                                <input type="time" id="end-time" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="absence-reason">Orsak till frånvaron</label>
+                            <textarea id="absence-reason" placeholder="Beskriv orsaken till din frånvaro..." required></textarea>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button class="btn btn-secondary">Avbryt</button>
+                            <button class="btn btn-primary">Skicka anmälan</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Andra sektioner (enkel placeholder) -->
+                <div class="content-section" id="schedule">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Schema</h1>
+                    <p>Här kommer ditt schema att visas.</p>
+                </div>
+                
+                <div class="content-section" id="courses">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Kurser</h1>
+                    <p>Här kommer dina kurser att visas.</p>
+                </div>
+                
+                <div class="content-section" id="messages">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Meddelanden</h1>
+                    <p>Här kommer dina meddelanden att visas.</p>
+                </div>
+                
+                <div class="content-section" id="tasks">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Uppgifter</h1>
+                    <p>Här kommer dina uppgifter att visas.</p>
+                </div>
+                
+                <div class="content-section" id="documents">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Dokument</h1>
+                    <p>Här kommer dina dokument att visas.</p>
+                </div>
+                
+                <div class="content-section" id="classmates">
+                    <h1 style="margin-bottom: 20px; color: #0066a1;">Klasskamrater</h1>
+                    <p>Här kommer dina klasskamrater att visas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hantera inloggning
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            // Enkel validering - i en riktig applikation skulle detta ske på servern
+            if (email === 'abdulrahman@gmail.com' && password === 'school123') {
+                // Dölj inloggningssidan och visa appen
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('schoolsoft-app').style.display = 'flex';
+                updateDateElements();
+            } else {
+                // Visa felmeddelande
+                errorMessage.style.display = 'block';
+            }
+        });
+        
+        // Logga ut funktion
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('login-page').style.display = 'flex';
+            document.getElementById('schoolsoft-app').style.display = 'none';
+            document.getElementById('password').value = '';
+            document.getElementById('error-message').style.display = 'none';
+        });
+        
+        // Funktion för att växla mellan sektioner
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Ta bort aktiv klass från alla menyalternativ
+                document.querySelectorAll('.menu-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // Lägg till aktiv klass på det klickade alternativet
+                this.classList.add('active');
+                
+                // Dölj alla innehållssektioner
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Visa den valda sektionen
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+        
+        // Funktion för att visa aktuellt datum
+        function updateDateElements() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString('sv-SE', options);
+            
+            // Uppdatera alla datum-element
+            document.querySelectorAll('#current-date-text, #grades-date-text, #attendance-date-text').forEach(el => {
+                el.textContent = dateString;
+            });
+            
+            // Sätt dagens datum i frånvaroformuläret
+            document.getElementById('absence-date').valueAsDate = now;
+            
+            // Sätt tider för frånvaroformuläret
+            document.getElementById('start-time').value = '10:40';
+            document.getElementById('end-time').value = '11:10';
+        }
+        
+        // Funktion för att växla kursvisning
+        function toggleCourse(courseId) {
+            const gradeList = document.getElementById(`${courseId}-grades`);
+            gradeList.style.display = gradeList.style.display === 'none' ? 'grid' : 'none';
+            
+            // Ändra pilens riktning
+            const arrow = gradeList.previousElementSibling.querySelector('.fa-chevron-down');
+            arrow.classList.toggle('fa-chevron-up');
+            arrow.classList.toggle('fa-chevron-down');
+        }
+        
+        // Dölj initialt alla betygslistor
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.grade-list').forEach(list => {
+                list.style.display = 'none';
+            });
+            
+            // Förifyll lösenordet för enklare testning
+            document.getElementById('password').value = 'school123';
+        });
+    </script>
+</body>
+</html>
